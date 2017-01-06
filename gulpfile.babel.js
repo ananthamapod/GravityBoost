@@ -86,7 +86,7 @@ gulp.task('img', (cb) => {
   )
 })
 
-gulp.task('lint' () => {
+gulp.task('lint', (cb) => {
   pump(
     [
       gulp.src(srcs.JS),
@@ -100,7 +100,7 @@ gulp.task('lint' () => {
 
 gulp.task('watch', () => {
   gulp.watch(srcs.PUG, ['pug'])
-  gulp.watch(srcs.JS, ['eslint', 'js'])
+  gulp.watch(srcs.JS, ['lint', 'js'])
   gulp.watch(srcs.CSS, ['css'])
   gulp.watch(srcs.IMG, ['img'])
 })
@@ -112,5 +112,5 @@ gulp.task('connect', () => {
   })
 })
 
-gulp.task('initialize', ['pug', 'eslint', 'js', 'css', 'img'])
+gulp.task('initialize', ['pug', 'lint', 'js', 'css', 'img'])
 gulp.task('default', ['connect', 'watch'])
