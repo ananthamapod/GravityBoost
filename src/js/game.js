@@ -1,25 +1,25 @@
 (function () {
-  var requestAnimationFrame = (function() {
-    var w = window
+  const requestAnimationFrame = (() => {
+    const w = window
     return w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame
   })()
 
 
-  var canvas = document.createElement("canvas")
-  var ctx = canvas.getContext("2d")
+  const canvas = document.createElement("canvas")
+  const ctx = canvas.getContext("2d")
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
   canvas.style.zIndex=1
   document.body.appendChild(canvas)
 
-  bgCanvas = document.createElement("canvas")
-  var bgCtx = bgCanvas.getContext("2d")
+  const bgCanvas = document.createElement("canvas")
+  const bgCtx = bgCanvas.getContext("2d")
   bgCanvas.width = window.innerWidth
   bgCanvas.height = window.innerHeight
   bgCanvas.style.zIndex=0
   document.body.appendChild(bgCanvas)
 
-  var colors = [
+  const colors = [
     "#F34235",
     "#2095F2",
     "#FEC006",
@@ -69,7 +69,7 @@
     this.rotate = 0
     this.render = function(ctx) {
       ctx.save()
-      ctx.rotate(object.rotate)
+      ctx.rotate(this.rotate)
       ctx.drawImage(
         this.image,
         this.x,
@@ -92,6 +92,7 @@
     this.radius = Math.floor(10 + 50 * Math.random())
     this.x = Math.floor((canvas.width - this.radius) * Math.random())
     this.y = Math.floor((canvas.height - this.radius) * Math.random())
+    self = this
     this.render = function(ctx) {
       ctx.fillRect(
         this.x,
@@ -101,15 +102,15 @@
       )
     }
     this.image.onload = function() {
-      this.ready = true
-      this.render(bgCtx)
+      self.ready = true
+      self.render(bgCtx)
     }
     this.image.src = this.src
   }
 
   var player = new Player()
 
-  var gameObjects = [
+  const gameObjects = [
     new Planet(),
     new Planet(),
     new Planet(),
@@ -159,7 +160,7 @@
   function render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     ctx.fillStyle = "blue"
-    for (object of gameObjects) {
+    for (let object of gameObjects) {
       object.render(ctx)
     }
   }
