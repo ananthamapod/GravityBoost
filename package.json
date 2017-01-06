@@ -1,0 +1,45 @@
+{
+  "name": "gravityboost",
+  "version": "1.0.0",
+  "description": "Little spaceshooter with raw js and potential fields map building Edit",
+  "main": "gulpfile.babel.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ananthamapod/GravityBoost.git"
+  },
+  "keywords": [
+    "game",
+    "space",
+    "shooting",
+    "rocket",
+    "asteroids",
+    "physics"
+  ],
+  "author": "Ananth Rao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ananthamapod/GravityBoost/issues"
+  },
+  "homepage": "https://github.com/ananthamapod/GravityBoost#readme",
+  "dependencies": {
+    "babel-core": "^6.21.0",
+    "babel-eslint": "^7.1.1",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "eslint": "^3.12.2",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-changed": "^1.3.2",
+    "gulp-connect": "^5.0.0",
+    "gulp-imagemin": "^3.1.1",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-minify-html": "^1.0.6",
+    "gulp-pug": "^3.2.0",
+    "gulp-strip-debug": "^1.1.0",
+    "pump": "^1.0.2"
+  }
+}
