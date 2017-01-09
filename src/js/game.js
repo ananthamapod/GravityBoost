@@ -1,3 +1,5 @@
+import GameObject from './Base/GameObject'
+
 (function () {
   const requestAnimationFrame = (() => {
     const w = window
@@ -103,7 +105,7 @@
     }
     this.image.onload = function() {
       self.ready = true
-      self.render(bgCtx)
+      self.render(ctx)
     }
     this.image.src = this.src
   }
