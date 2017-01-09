@@ -4,7 +4,9 @@
   "description": "Little spaceshooter with raw js and potential fields map building Edit",
   "main": "gulpfile.babel.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev" : "gulp",
+    "prod" : "gulp initialize"
   },
   "repository": {
     "type": "git",
