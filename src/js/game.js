@@ -102,7 +102,8 @@ import GameObject from './src/js/Base/GameObject'
     this.y = Math.floor((canvas.height - this.radius) * Math.random())
     var self = this
     this.render = function(ctx) {
-      ctx.fillRect(
+      ctx.drawImage(
+        this.image,
         this.x,
         this.y,
         this.radius,
