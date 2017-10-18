@@ -10,6 +10,7 @@ import minifyHTML from 'gulp-minify-html'
 import imagemin from 'gulp-imagemin'
 import changed from 'gulp-changed'
 import eslint from 'gulp-eslint'
+import stylelint from 'gulp-stylelint'
 import browserify from 'browserify'
 import through2 from 'through2'
 
@@ -78,6 +79,11 @@ gulp.task('css', (cb) => {
   pump(
     [
       gulp.src(srcs.CSS),
+      stylelint({
+        reporters: [
+          {formatter: 'string', console: true}
+        ]
+      }),
       changed(dests.CSS),
       autoprefix('last 2 versions'),
       minifyCSS(),
