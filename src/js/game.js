@@ -1,4 +1,6 @@
-import GameObject from './Base/GameObject'
+// eslint-disable-next-line no-unused-vars
+import Vector from './src/js/Base/Vector'
+import GameObject from './src/js/Base/GameObject'
 
 (function () {
   const requestAnimationFrame = (() => {
@@ -21,6 +23,7 @@ import GameObject from './Base/GameObject'
   bgCanvas.style.zIndex=0
   document.body.appendChild(bgCanvas)
 
+// eslint-disable-next-line no-unused-vars
   const colors = [
     "#F34235",
     "#2095F2",
@@ -34,29 +37,32 @@ import GameObject from './Base/GameObject'
     "#CCDB38"
   ]
 
-  function Background() {
-    this.ready = false
-    this.image = new Image()
-    this.src = "images/background.jpg",
-    this.x = 0
-    this.y = 0
-    this.width = canvas.width
-    this.height = canvas.height
-    this.render = function(ctx) {
-      ctx.drawImage(
-        this.image,
-        this.x,
-        this.y,
-        this.width,
-        this.height
-      )
+  class Background extends GameObject {
+    constructor() {
+      super()
+      this.ready = false
+      this.image = new Image()
+      this.src = "images/background.jpg",
+      this.x = 0
+      this.y = 0
+      this.width = canvas.width
+      this.height = canvas.height
+      this.render = function(ctx) {
+        ctx.drawImage(
+          this.image,
+          this.x,
+          this.y,
+          this.width,
+          this.height
+        )
+      }
+      var self = this
+      this.image.onload = function() {
+        self.ready = true
+        self.render(bgCtx)
+      }
+      this.image.src = this.src
     }
-    var self = this
-    this.image.onload = function() {
-      self.ready = true
-      self.render(bgCtx)
-    }
-    this.image.src = this.src
   }
 
   function Player() {
@@ -90,11 +96,11 @@ import GameObject from './Base/GameObject'
   function Planet() {
     this.ready = false
     this.image = new Image()
-    this.src = "images/luna"
+    this.src = "images/luna.png"
     this.radius = Math.floor(10 + 50 * Math.random())
     this.x = Math.floor((canvas.width - this.radius) * Math.random())
     this.y = Math.floor((canvas.height - this.radius) * Math.random())
-    self = this
+    var self = this
     this.render = function(ctx) {
       ctx.fillRect(
         this.x,

@@ -5,8 +5,8 @@
   "main": "gulpfile.babel.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev" : "gulp",
-    "prod" : "gulp initialize"
+    "dev": "gulp",
+    "prod": "gulp initialize"
   },
   "repository": {
     "type": "git",
@@ -29,8 +29,10 @@
   "dependencies": {
     "babel-core": "^6.21.0",
     "babel-eslint": "^7.1.1",
-    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-stage-0": "^6.16.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.3.0",
     "eslint": "^3.12.2",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
@@ -43,6 +45,9 @@
     "gulp-minify-html": "^1.0.6",
     "gulp-pug": "^3.2.0",
     "gulp-strip-debug": "^1.1.0",
-    "pump": "^1.0.2"
+    "pump": "^1.0.2",
+    "through2": "^2.0.3",
+    "vinyl-source-stream": "^1.1.0",
+    "vinyl-transform": "^1.0.0"
   }
 }

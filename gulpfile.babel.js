@@ -10,6 +10,8 @@ import minifyHTML from 'gulp-minify-html'
 import imagemin from 'gulp-imagemin'
 import changed from 'gulp-changed'
 import eslint from 'gulp-eslint'
+import browserify from 'browserify'
+import through2 from 'through2'
 
 
 const roots = {
@@ -36,12 +38,23 @@ const dests = {
 }
 
 gulp.task('js', (cb) => {
+
   pump(
     [
-      gulp.src(srcs.JS),
-      babel({
-        presets: ['es2015', 'stage-0']
-      }),
+      gulp.src(`${roots.src}/js/game.js`),
+      through2.obj((file, enc, next) => {
+          browserify(file)
+            .transform('babelify', {presets: ['env']})
+            .bundle((err, res) => {
+              // assumes file.contents is a Buffer
+              if (err) {
+                console.log(err)
+              } else {
+                file.contents = res
+                next(null, file)
+              }
+            })
+        }),
       gulp.dest(dests.JS)
     ],
     cb
@@ -107,7 +120,7 @@ gulp.task('watch', () => {
 
 gulp.task('connect', () => {
   connect.server({
-    root: './',
+    root: './build',
     port: 5000
   })
 })
