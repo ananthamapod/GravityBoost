@@ -1,6 +1,5 @@
-// eslint-disable-next-line no-unused-vars
 import Vector from './src/js/Base/Vector'
-import GameObject from './src/js/Base/GameObject'
+import ImageObject from './src/js/Base/ImageObject'
 
 (function () {
   const requestAnimationFrame = (() => {
@@ -37,84 +36,60 @@ import GameObject from './src/js/Base/GameObject'
     "#CCDB38"
   ]
 
-  class Background extends GameObject {
+  class Background extends ImageObject {
     constructor() {
-      super()
-      this.ready = false
-      this.image = new Image()
-      this.src = "images/background.jpg",
-      this.x = 0
-      this.y = 0
-      this.width = canvas.width
-      this.height = canvas.height
-      this.render = function(ctx) {
-        ctx.drawImage(
-          this.image,
-          this.x,
-          this.y,
-          this.width,
-          this.height
-        )
-      }
-      var self = this
-      this.image.onload = function() {
-        self.ready = true
-        self.render(bgCtx)
-      }
-      this.image.src = this.src
+      super(new Vector(0, 0),
+        new Vector(canvas.width, canvas.height),
+        "images/background.jpg"
+      )
+
+      this.onload(() => {
+        this.render(bgCtx)
+      })
+    }
+
+    render(ctx) {
+      console.log(this)
+      super.render(ctx)
     }
   }
 
-  function Player() {
-    this.ready = false
-    this.image = new Image()
-    this.src = "images/player.png"
-    this.width = 30
-    this.height = 70
-    this.x = canvas.width/2 - this.width
-    this.y = canvas.height/2 - this.height
-    this.speed = 256
-    this.rotate = 0
-    this.render = function(ctx) {
+  class Player extends ImageObject {
+    constructor() {
+      super(
+        new Vector(canvas.width/2 - 30, canvas.height/2 - 70),
+        new Vector(30, 70),
+        "images/player.png",
+        {
+          speed: 256,
+          rotate: 0
+        }
+      )
+    }
+
+    render(ctx) {
       ctx.save()
       ctx.rotate(this.rotate)
-      ctx.drawImage(
-        this.image,
-        this.x,
-        this.y,
-        this.width,
-        this.height
-      )
+      super.render(ctx)
       ctx.restore()
     }
-    this.image.onload = function() {
-      this.ready = true
-    }
-    this.image.src = this.src
   }
 
-  function Planet() {
-    this.ready = false
-    this.image = new Image()
-    this.src = "images/luna.png"
-    this.radius = Math.floor(10 + 50 * Math.random())
-    this.x = Math.floor((canvas.width - this.radius) * Math.random())
-    this.y = Math.floor((canvas.height - this.radius) * Math.random())
-    var self = this
-    this.render = function(ctx) {
-      ctx.drawImage(
-        this.image,
-        this.x,
-        this.y,
-        this.radius,
-        this.radius
+  class Planet extends ImageObject {
+    constructor() {
+      let radius = Math.floor(10 + 50 * Math.random())
+      super(
+        new Vector(
+          Math.floor((canvas.width - radius) * Math.random()),
+          Math.floor((canvas.height - radius) * Math.random())
+        ),
+        new Vector(radius, radius),
+        "images/luna.png",
+        { radius }
       )
+
+      this.onLoad(() => this.render(ctx))
     }
-    this.image.onload = function() {
-      self.ready = true
-      self.render(ctx)
-    }
-    this.image.src = this.src
   }
 
   var player = new Player()
