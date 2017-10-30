@@ -69,7 +69,6 @@ import ImageObject from './src/js/Base/ImageObject'
     }
 
     render(ctx) {
-      console.log("render player")
       ctx.save()
       ctx.rotate(this.rotate)
       super.render(ctx)
@@ -78,7 +77,6 @@ import ImageObject from './src/js/Base/ImageObject'
 
     update(directions, modifier) {
       if (Object.keys(directions).length > 0)
-        console.log(directions)
       if (directions.hasOwnProperty("up")) {
         this.position.y = Math.max(0, this.position.y - this.speed * modifier)
       }
@@ -108,10 +106,12 @@ import ImageObject from './src/js/Base/ImageObject'
       )
 
       this.onLoad(() => this.render(ctx))
+
     }
   }
 
   const player = new Player()
+  console.log(player)
 
   const gameObjects = [
     new Planet(),
@@ -179,5 +179,6 @@ import ImageObject from './src/js/Base/ImageObject'
 
   then = Date.now()
   new Background()
+  player.ready = true
   main()
 })()

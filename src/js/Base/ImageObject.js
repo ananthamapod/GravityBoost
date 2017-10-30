@@ -27,10 +27,11 @@ class ImageObject extends GameObject {
   }
 
   onLoad(cb) {
-    this.image.onload = () => {
+    this.image.addEventListener("load", () => {
       this.ready = true
       cb()
-    }
+    })
+    this.image.addEventListener("error", () => console.log("error"))
   }
 }
 
