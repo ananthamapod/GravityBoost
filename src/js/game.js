@@ -35,6 +35,7 @@ import ImageObject from './src/js/Base/ImageObject'
     "#E81D62",
     "#CCDB38"
   ]
+  let then = 0
 
   class Background extends ImageObject {
     constructor() {
@@ -43,7 +44,7 @@ import ImageObject from './src/js/Base/ImageObject'
         "images/background.jpg"
       )
 
-      this.onload(() => {
+      this.onLoad(() => {
         this.render(bgCtx)
       })
     }
@@ -68,10 +69,28 @@ import ImageObject from './src/js/Base/ImageObject'
     }
 
     render(ctx) {
+      console.log("render player")
       ctx.save()
       ctx.rotate(this.rotate)
       super.render(ctx)
       ctx.restore()
+    }
+
+    update(directions, modifier) {
+      if (Object.keys(directions).length > 0)
+        console.log(directions)
+      if (directions.hasOwnProperty("up")) {
+        this.position.y = Math.max(0, this.position.y - this.speed * modifier)
+      }
+      if (directions.hasOwnProperty("down")) {
+        this.position.y = Math.min(canvas.height-60, this.position.y + this.speed * modifier)
+      }
+      if (directions.hasOwnProperty("left")) {
+        this.position.x = Math.max(0, this.position.x - this.speed * modifier)
+      }
+      if (directions.hasOwnProperty("right")) {
+        this.position.x = Math.min(canvas.width-30, this.position.x + this.speed * modifier)
+      }
     }
   }
 
@@ -92,7 +111,7 @@ import ImageObject from './src/js/Base/ImageObject'
     }
   }
 
-  var player = new Player()
+  const player = new Player()
 
   const gameObjects = [
     new Planet(),
@@ -112,7 +131,7 @@ import ImageObject from './src/js/Base/ImageObject'
     player
   ]
 
-  var keysDown = {}
+  let keysDown = {}
   addEventListener("keydown", function(e) {
     keysDown[e.keyCode] = true
   }, false)
@@ -121,24 +140,21 @@ import ImageObject from './src/js/Base/ImageObject'
   }, false)
 
   function update(modifier) {
-    var rotate = 0.0
-    // up
+    var directions = {}
     if (38 in keysDown) {
-      player.y = Math.max(0, player.y - player.speed * modifier)
+      directions.up = true
     }
-    // down
     if (40 in keysDown) {
-      player.y = Math.min(canvas.height-60, player.y + player.speed * modifier)
+      directions.down = true
     }
-    // left
     if (37 in keysDown) {
-      player.x = Math.max(0, player.x - player.speed * modifier)
+      directions.left = true
     }
-    // right
     if (39 in keysDown) {
-      player.x = Math.min(canvas.width-30, player.x + player.speed * modifier)
+      directions.right = true
     }
-    player.rotate = rotate
+
+    player.update(directions, modifier)
   }
 
   function render() {
@@ -150,8 +166,8 @@ import ImageObject from './src/js/Base/ImageObject'
   }
 
   function main() {
-    var now = Date.now()
-    var timeDelta = now - then
+    const now = Date.now()
+    const timeDelta = now - then
 
     update(timeDelta/1000.0)
     render()
@@ -161,7 +177,7 @@ import ImageObject from './src/js/Base/ImageObject'
     requestAnimationFrame(main)
   }
 
-  var then = Date.now()
+  then = Date.now()
   new Background()
   main()
 })()
