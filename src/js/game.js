@@ -7,6 +7,10 @@ import ImageObject from './src/js/Base/ImageObject'
     return w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame
   })()
 
+  console.log(Math)
+  Math.clamp = function (num, max, min) {
+    return num <= min ? min : num >= max ? max : num
+  }
 
   const canvas = document.createElement("canvas")
   const ctx = canvas.getContext("2d")
@@ -39,7 +43,7 @@ import ImageObject from './src/js/Base/ImageObject'
 
   class Background extends ImageObject {
     constructor() {
-      super(new Vector(0, 0),
+      super(new Vector(),
         new Vector(canvas.width, canvas.height),
         "images/background.jpg"
       )
@@ -62,7 +66,10 @@ import ImageObject from './src/js/Base/ImageObject'
         new Vector(30, 70),
         "images/player.png",
         {
-          speed: 256,
+          speed: new Vector(),
+          acceleration: 20,
+          drag: 10,
+          maxSpeed: 300,
           rotate: 0
         }
       )
@@ -70,25 +77,43 @@ import ImageObject from './src/js/Base/ImageObject'
 
     render(ctx) {
       ctx.save()
-      ctx.rotate(this.rotate)
       super.render(ctx)
       ctx.restore()
     }
 
     update(directions, modifier) {
-      if (Object.keys(directions).length > 0)
+      let delta = new Vector()
+      // NOTE: since (0,0) is in the top left,
+      // deltas might seem opposite to what is intuitive
       if (directions.hasOwnProperty("up")) {
-        this.position.y = Math.max(0, this.position.y - this.speed * modifier)
+        delta.y--
       }
       if (directions.hasOwnProperty("down")) {
-        this.position.y = Math.min(canvas.height-60, this.position.y + this.speed * modifier)
+        delta.y++
       }
       if (directions.hasOwnProperty("left")) {
-        this.position.x = Math.max(0, this.position.x - this.speed * modifier)
+        delta.x--
       }
       if (directions.hasOwnProperty("right")) {
-        this.position.x = Math.min(canvas.width-30, this.position.x + this.speed * modifier)
+        delta.x++
       }
+
+      this.speed.x = Math.clamp(
+        this.speed.x + (delta.x * this.acceleration - Math.sign(this.speed.x) * this.drag),
+        this.maxSpeed,
+        -this.maxSpeed
+      )
+      this.speed.y = Math.clamp(
+        this.speed.y + (delta.y * this.acceleration - Math.sign(this.speed.y) * this.drag),
+        this.maxSpeed,
+        -this.maxSpeed
+      )
+
+      console.log(this.speed)
+
+      // position resolution
+      this.position.x = Math.clamp(this.position.x + this.speed.x * modifier, canvas.width-30, 0)
+      this.position.y = Math.clamp(this.position.y + this.speed.y * modifier, canvas.height-60, 0)
     }
   }
 

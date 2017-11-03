@@ -2,7 +2,7 @@ import Vector from './Vector'
 import GameObject from './GameObject'
 
 class ImageObject extends GameObject {
-  constructor(position = new Vector(0,0), size = new Vector(0,0), src = undefined, options = {}) {
+  constructor(position, size, src = undefined, options = {}) {
     super(position, size, options)
     if (!src && !options.hasOwnProperty("src")) {
       throw new TypeError("Image object does not have image source")
