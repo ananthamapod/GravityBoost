@@ -1,5 +1,6 @@
-import Vector from './src/js/Base/Vector'
-import ImageObject from './src/js/Base/ImageObject'
+import Background from './src/js/Background'
+import Player from './src/js/Player'
+import Planet from './src/js/Planet'
 
 (function () {
   const requestAnimationFrame = (() => {
@@ -7,7 +8,6 @@ import ImageObject from './src/js/Base/ImageObject'
     return w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame
   })()
 
-  console.log(Math)
   Math.clamp = function (num, max, min) {
     return num <= min ? min : num >= max ? max : num
   }
@@ -41,118 +41,24 @@ import ImageObject from './src/js/Base/ImageObject'
   ]
   let then = 0
 
-  class Background extends ImageObject {
-    constructor() {
-      super(new Vector(),
-        new Vector(canvas.width, canvas.height),
-        "images/background.jpg"
-      )
-
-      this.onLoad(() => {
-        this.render(bgCtx)
-      })
-    }
-
-    render(ctx) {
-      console.log(this)
-      super.render(ctx)
-    }
-  }
-
-  class Player extends ImageObject {
-    constructor() {
-      super(
-        new Vector(canvas.width/2 - 30, canvas.height/2 - 70),
-        new Vector(30, 70),
-        "images/player.png",
-        {
-          speed: new Vector(),
-          acceleration: 20,
-          drag: 10,
-          maxSpeed: 300,
-          rotate: 0
-        }
-      )
-    }
-
-    render(ctx) {
-      ctx.save()
-      super.render(ctx)
-      ctx.restore()
-    }
-
-    update(directions, modifier) {
-      let delta = new Vector()
-      // NOTE: since (0,0) is in the top left,
-      // deltas might seem opposite to what is intuitive
-      if (directions.hasOwnProperty("up")) {
-        delta.y--
-      }
-      if (directions.hasOwnProperty("down")) {
-        delta.y++
-      }
-      if (directions.hasOwnProperty("left")) {
-        delta.x--
-      }
-      if (directions.hasOwnProperty("right")) {
-        delta.x++
-      }
-
-      this.speed.x = Math.clamp(
-        this.speed.x + (delta.x * this.acceleration - Math.sign(this.speed.x) * this.drag),
-        this.maxSpeed,
-        -this.maxSpeed
-      )
-      this.speed.y = Math.clamp(
-        this.speed.y + (delta.y * this.acceleration - Math.sign(this.speed.y) * this.drag),
-        this.maxSpeed,
-        -this.maxSpeed
-      )
-
-      console.log(this.speed)
-
-      // position resolution
-      this.position.x = Math.clamp(this.position.x + this.speed.x * modifier, canvas.width-30, 0)
-      this.position.y = Math.clamp(this.position.y + this.speed.y * modifier, canvas.height-60, 0)
-    }
-  }
-
-  class Planet extends ImageObject {
-    constructor() {
-      let radius = Math.floor(10 + 50 * Math.random())
-      super(
-        new Vector(
-          Math.floor((canvas.width - radius) * Math.random()),
-          Math.floor((canvas.height - radius) * Math.random())
-        ),
-        new Vector(radius, radius),
-        "images/luna.png",
-        { radius }
-      )
-
-      this.onLoad(() => this.render(ctx))
-
-    }
-  }
-
-  const player = new Player()
+  const player = new Player(canvas.width, canvas.height, ctx)
   console.log(player)
 
   const gameObjects = [
-    new Planet(),
-    new Planet(),
-    new Planet(),
-    new Planet(),
-    new Planet(),
-    new Planet(),
-    new Planet(),
-    new Planet(),
-    new Planet(),
-    new Planet(),
-    new Planet(),
-    new Planet(),
-    new Planet(),
-    new Planet(),
+    new Planet(canvas.width, canvas.height, ctx),
+    new Planet(canvas.width, canvas.height, ctx),
+    new Planet(canvas.width, canvas.height, ctx),
+    new Planet(canvas.width, canvas.height, ctx),
+    new Planet(canvas.width, canvas.height, ctx),
+    new Planet(canvas.width, canvas.height, ctx),
+    new Planet(canvas.width, canvas.height, ctx),
+    new Planet(canvas.width, canvas.height, ctx),
+    new Planet(canvas.width, canvas.height, ctx),
+    new Planet(canvas.width, canvas.height, ctx),
+    new Planet(canvas.width, canvas.height, ctx),
+    new Planet(canvas.width, canvas.height, ctx),
+    new Planet(canvas.width, canvas.height, ctx),
+    new Planet(canvas.width, canvas.height, ctx),
     player
   ]
 
@@ -179,12 +85,13 @@ import ImageObject from './src/js/Base/ImageObject'
       directions.right = true
     }
 
-    player.update(directions, modifier)
+    for (let object of gameObjects) {
+      object.update(directions, modifier)
+    }
   }
 
   function render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.fillStyle = "blue"
     for (let object of gameObjects) {
       object.render(ctx)
     }
@@ -203,7 +110,7 @@ import ImageObject from './src/js/Base/ImageObject'
   }
 
   then = Date.now()
-  new Background()
+  new Background(canvas.width, canvas.height, bgCtx)
   player.ready = true
   main()
 })()
