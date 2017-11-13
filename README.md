@@ -8,6 +8,8 @@ Gravity Boost is a web deployable game built within the HTML5 canvas structure t
 
 I thought it would be interesting to experiment with HTML5 canvas without any sort of framework or game engine involved (eg. phaser.io which I've used in the past). I never like experimenting with new technology without direction, so Gravity Boost as a game was born as an end goal.
 
+![screenshot](https://user-images.githubusercontent.com/5254722/32709354-baf89d00-c7fd-11e7-8c79-3f2000b503f7.png)
+
 ## Getting Started
 
 ### Prerequisites
